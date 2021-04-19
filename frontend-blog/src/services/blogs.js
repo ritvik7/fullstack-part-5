@@ -12,7 +12,7 @@ const create = (blog, token) => {
 }
 
 const like = (blog) => {
-  blog.likes = blog.likes + 1
+  blog.likes = blog.likes
   const request = axios.put(`${baseUrl}/${blog.id}`, blog)
   return request.then(response => response.data)
 }

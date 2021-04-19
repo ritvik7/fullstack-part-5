@@ -13,9 +13,9 @@ const LoginForm = ({loginUser}) => {
     <div>
       <h2>login to application</h2>
       <form onSubmit={handleLogin}>
-        username <input value={username} onChange={({target}) => setUsername(target.value)}/> <br/>
-        password <input value={password}  onChange={({target}) => setPassword(target.value)} type='password'/> <br/>
-        <button type="submit">login</button>
+        username <input id='username' value={username} onChange={({target}) => setUsername(target.value)}/> <br/>
+        password <input id='password' value={password}  onChange={({target}) => setPassword(target.value)} type='password'/> <br/>
+        <button id='login' type="submit">login</button>
       </form>
     </div>
   )

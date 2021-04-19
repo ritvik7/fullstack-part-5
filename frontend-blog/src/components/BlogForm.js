@@ -22,11 +22,11 @@ const BlogForm = ({createBlog}) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>create new blog</button>
+        <button id='create-blog-form' onClick={toggleVisibility}>create new blog</button>
       </div>
       <div style={showWhenVisible}>
         <h2>create new</h2>
-        <form className='blog-form' onSubmit={handleBlog}>
+        <form id='blog-form' onSubmit={handleBlog}>
           title: <input id='title' value={title} onChange={({target}) => setTitle(target.value)} /><br/>
           author: <input id='author' value={author} onChange={({target}) => setAuthor(target.value)} /><br/>
           url: <input id='url' value={url} onChange={({target}) => setUrl(target.value)} /><br/>

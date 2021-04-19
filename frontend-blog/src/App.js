@@ -13,12 +13,18 @@ const App = () => {
 
   useEffect(() => {
     const currentUserString = window.localStorage.getItem('user')
-    if(currentUserString !== null & user === undefined){
+    if(currentUserString){
       const currentUser = JSON.parse(currentUserString) 
       setUser(currentUser)
     }
-    blogService.getAll().then(blogs =>setBlogs( blogs ))
-  }, [user])
+    blogService
+      .getAll()
+      .then(blogResult => {
+        blogResult.sort((b1, b2) => b2.likes - b1.likes)
+        setBlogs( blogResult )
+      })
+      .catch(error => console.log(error))
+  }, [])
 
   const loginUser = (user) => {
     loginService
@@ -28,7 +34,7 @@ const App = () => {
         setUser(result)
       })
       .catch(error => {
-        setNotification({status:'fail', message:'Invalid username or password'})
+        setNotification({status:'fail', message:error.response.data.error})
         setTimeout(() => setNotification(), 3000)
       })
   }
@@ -45,6 +51,10 @@ const App = () => {
     .then(newBlog => {
       setBlogs(blogs.concat(newBlog))
       setNotification({status:'success', message: `${newBlog.title} by ${newBlog.author} added`})
+      setTimeout(() => setNotification(), 3000)
+    })
+    .catch(error => {
+      setNotification({status:'fail', message:error.response.data.error})
       setTimeout(() => setNotification(), 3000)
     })
   }
@@ -74,9 +84,9 @@ const App = () => {
           <h2>blogs</h2>
           {user.username} logged in <br/>
           <button onClick={handleLogout}>log out</button> <br/><br/>
-          <BlogForm createBlog={createBlog}/>
+          <BlogForm id  ='create-blog' createBlog={createBlog}/>
           {blogs.map(blog =>
-            <Blog user={user} key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} />
+            <Blog id='blog' user={user} key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} />
           )}
         </div>
       }
