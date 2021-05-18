@@ -18,7 +18,7 @@ blogRouter.post('/', async (request, response) => {
   let result = await blog.save()
   user.blogs = user.blogs.concat(result.id)
   await user.save()
-  result = result.populate('user', { blogs: 0 })
+  result = await Blog.findById(result.id).populate('user', { blogs: 0 })
   response.status(201).json(result)
 })
 
@@ -31,7 +31,7 @@ blogRouter.delete('/:id', async (request, response) => {
     throw Error('UserNotAuthorized')
   await Blog.findByIdAndRemove(request.params.id)
   const user = await User.findById(blogToBeDeleted.user)
-  user.blogs = user.blogs.filter(blog => blog.id !== blogToBeDeleted.id)
+  user.blogs = user.blogs.filter(blog => blog.toString() !== blogToBeDeleted.id)
   await user.save()
   response.status(204).end()
 })
